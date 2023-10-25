@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- jquery : id속성(모든 태그가 가질 수 있는 고유한 속성)과 name 속성 -->
+</head>
+<body>
+    <form name="myform" id="myform" >
+        제목 : <input type="text" name="title" id="title" /> <br />
+        글쓴이 : <input type="text" name="author" id="author"> <br />
+        <button type="button" id="btnWrite">글쓰기</button> <!-- submit : 서버로 무조건 전송 -->
+        <!-- 
+            <button>등록</button>
+            <input type="submit" value="등록" />
+
+            <button type="button">등록</button>
+            <input type="button" value="등록" />
+         -->
+    </form>
+</body>
+</html>
+
+<script>
+    // 기존의 자바스크립트에서는, window.onload = 문서가 전체 다 메모리에 로드되면 작업시작
+    // => jquery 형식으로 바꾸면 $(document).ready(() => {})
+    // 생략하여 아래와 같이 작성할 수 있다.
+    $(() => {
+        /*
+        $("#btnWrite").click(() => {
+            $("#myform").prop("action", "/board/save"); // attr(구) -> prop : 속성값을 변경하는 함수
+            // myform에 action 속성의 값을 두 번째 매개변수로 설정
+            $("#myform").prop("method", "post");
+            $("#myform").submit();  // 서버로 전송
+        });
+        */
+
+        // ajax 통신으로 처리
+        $("#btnWrite").click(() => {
+            $.ajax({
+                url: "/board/save2",
+                data: {
+                    "title": $("#title").val(),
+                    "author": $("#author").val()
+                },
+                dataType: "json",
+                method: "POST"
+            })
+            .done((res) => {
+                console.log( res );
+                if ( res.result == "success")
+                {
+                    alert("등록되었습니다.");
+                    location.href = "/board/list";  // 결과가 success인 경우 페이지 이동
+                }
+            })
+            .fail((res, error, status) => {
+                console.log( error );
+            })
+            // error와 success(구) -> fail, done
+        });
+    });
+
+</script>
