@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+	<!-- form태그는 페이지 하나에 하나만 있는 것이 좋다. -->
+	<form method="post" action="/person/save" name="myform" id="myform">
+		번호 : <input type="text" name="id" id="id" /><br />
+		이름 : <input type="text" name="name" id="name" /><br />
+		전화번호 : <input type="text" name="phone" id="phone" /><br />
+		이메일 : <input type="text" name="email" id="email" /><br />
+		<button>등록</button><br />
+		<button type="button" id="btnJavascript">자바스크립트로 저장하기</button><br />
+		<button type="button" id="btnJquery">jquery로 저장하기</button><br />
+		<button type="button" id="btnAjax">Ajax로 저장하기</button>
+	</form>
+</body>
+</html>
+<script>
+	window.onload = function() {
+		// btnJavascript에 이벤트 핸들러를 붙인다.
+		let btn1 = document.getElementById("btnJavascript");
+		btn1.addEventListener("click", function() {
+			console.log("등록");
+			document.myform.method ="post";
+			document.myform.action = "/person/save";
+			document.myform.submit();
+		});
+	}
+	
+	$(() => {
+		let btn2 = $("#btnJquery");
+		btn2.click(() => {
+			$("#myform").prop("method", "post");
+			$("#myform").prop("action", "/person/save");
+			$("#myform").submit();
+		});
+		
+		let btn3 = $("#btnAjax");
+		btn3.click(() => {
+			$.ajax({
+				url : "/person/save2",
+				data : {
+					"id" : $("#id").val(),
+					"name" : $("#name").val(),
+					"phone": $("#phone").val(),
+					"email" : $("#email").val()
+				},
+				dataType: "json",
+				method: "POST"
+			})
+			.done((res) => {
+				console.log(res);
+			})
+			.fail((res, error, status) => {
+				console.log(error);
+			})
+		});
+	});
+	
+	// ajax 처리를 하고 나서 서버쪽에서 값을 전달해야 한다.
+	// Controller에서 @ResponseBody 데이터를 처리하고 결과를 반환하는 함수가 반드시 존재해야 한다.
+	// json 형태로 보내는 함수를 하나 더 만들어야 한다.
+	// 동기방식 => 전체 문서가 서버로가서 다시 새로운 문서가 옴
+	// 비동기 방식 ajax는 현재 문서를 서버로 보내지 않고 일부 데이터만 백그라운드로 보내서 결과값만 받아와서 뿌린다.
+	// 온전히 자바스크립트로만. submit 함수를 사용할 수없다.
+	// Ajax를 하기 위해서 자바스크립트가 제공하는 XMLHttp 객체가 있어 이 객체를 만들어 데이터를 주고받는데
+	// 직접하면 어려워서 .ajax 라는 jqeury 함수를 사용하다가 ecmascript 2015년 자바스크립트 표준을 만들면서 fetch 라는 함수로 ajax해라
+	// fetch, axios(라이브러리)
+</script>
