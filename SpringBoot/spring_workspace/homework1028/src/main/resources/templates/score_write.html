@@ -3,16 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+	$(() => {
+		$("#btnSubmit").click(() => {
+			$("#scoreForm").submit();
+		});
+	});
+</script>
 </head>
 <body>
-	<form action="/score/save" method="post">
+	<form id="scoreForm" action="/score/save" method="post">
 		<p>점수를 입력하세요.</p>
 		번호 : <input type="text" name="idx" /><br />
 		이름 : <input type="text" name="name" /><br />
 		국어점수 : <input type="text" name="kor" /><br />
 		영어점수 : <input type="text" name="eng" /><br />
 		수학점수 : <input type="text" name="mat" /><br />
-		<button type="submit">제출</button>
+		<button id="btnSubmit">제출</button>
 	</form>
 </body>
 </html>
