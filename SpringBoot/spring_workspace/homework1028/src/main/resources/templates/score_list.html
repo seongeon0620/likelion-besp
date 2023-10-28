@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table border="1" cellpadding="5" cellspacing="0">
+		<thead>
+			<tr>
+				<td>번호</td>
+				<td>이름</td>
+				<td>국어</td>
+				<td>영어</td>
+				<td>수학</td>
+				<td>총점</td>
+				<td>평균</td>
+			</tr>
+		</thead>
+		{{#sList}}
+		<tr>
+			<td>{{idx}}</td>
+			<td><a href="/score/view/{{idx}}">{{name}}</a></td>
+			<td>{{kor}}</td>
+			<td>{{eng}}</td>
+			<td>{{mat}}</td>
+			<td>{{total}}</td>
+			<td>{{avg}}</td>
+		</tr>
+		{{/sList}}
+	</table>
+	<a href="/score/write">점수 쓰기</a>
+</body>
+</html>
