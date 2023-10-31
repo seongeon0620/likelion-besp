@@ -5,16 +5,42 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 
 
 //컨피그할때 어떤 경우는 특정 클래스를 상속받는 경우도 있고 아닌경우도 있다
 @Configuration
 public class DatabaseConfig {
+	
+	//클래스내에서 application.properties 파일에 접근하기위해서  
+	@Autowired  
+	ApplicationContext applicationContext;
+
+	//hikari 설정하기  : application.properties 파일에서 히카리 정보 알아오기 
+	//히카리 : 자바에서 제공하는 디비커넥션풀이다. 다량의 디비접속 처리가 가능하고 속도가 빠르다
+	
+	@Bean  //@Bean 객체라는 의미임 
+	@ConfigurationProperties(prefix = "spring.datasource.hikari")
+	public HikariConfig hikariConfig() {
+		return new HikariConfig();
+		// application.properties의 hikiri 설정을 읽어 객체를 만들어 던져준다.
+	}
+
+	@Bean
+	public DataSource dataSource() {
+		// 설정 객체값으로 데이터소스를 만들어 반환한다.
+		return new HikariDataSource(hikariConfig());
+	}
 	
 	//MyBatis factory -> SessionTermplate
 	@Bean //객체 생성 

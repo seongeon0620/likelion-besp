@@ -23,5 +23,15 @@ public class BoardDaoImpl implements BoardDao {
 		// 프로젝트 통틀어 하나의 아이디만 존재할 수 있다.
 		return sm.selectList("Board_getList", dto);
 	}
-	
+
+	@Override
+	public BoardDto getView(BoardDto dto) {
+		return sm.selectOne("Board_getView", dto);
+	}
+
+	@Override
+	public void insert(BoardDto dto) {
+		sm.insert("Board_insert", dto);
+	}
+
 }

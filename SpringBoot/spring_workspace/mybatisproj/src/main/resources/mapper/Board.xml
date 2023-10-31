@@ -4,14 +4,61 @@
  
 <mapper namespace="Board">
 	<select id="Board_getList" resultType="BoardDto" parameterType="BoardDto">
-	select
-		A.seq
-		,A.title
-		,A.writer
-		,A.hit
-		,A.contents
-		,A.wdate
-	from
-		tb_board A
+		select
+			A.seq
+			, A.title
+			, A.writer
+			, to_char(A.wdate, 'yyyy-mm-dd') wdate
+			, A.contents
+			, A.hit
+			, A.rnum 
+		from 
+		(
+			select A.seq, A.title, A.writer, A.wdate, A.contents,A.hit,
+				row_number() over( order by seq desc) as rnum,
+				ceil(row_number() over( order by seq desc)/10) - 1 as pg 
+			from tb_board A
+		)A where pg=#{pg}
 	</select>
+	
+	<select id="Board_getView" resultType="BoardDto" parameterType="BoardDto">
+		select
+			A.seq
+			,A.title
+			,A.writer
+			,A.hit
+			,A.contents
+			,A.wdate
+		from
+			tb_board A
+		where
+			A.seq = #{seq}
+		<!-- 
+			#{seq} - 실제 변수와 바인딩이 늦게됨. 원래 데이터 타입이 숫자면 14. 문자면 '14'
+			${seq} - 무조건 대체 숫자든 문자든 14 
+		-->
+	</select>
+	
+	<insert id="Board_insert" parameterType="BoardDto">
+		<selectKey resultType="Integer" keyProperty="seq" order="BEFORE">
+		select nvl(max(seq), 0) + 1 from tb_board
+		</selectKey>
+		
+		insert into tb_board
+		(
+			seq
+			,title
+			,writer
+			,contents
+			,wdate
+		)
+		values 
+		(
+			#{seq}
+			,#{title}
+			,#{writer}
+			,#{contents}
+			,sysdate
+		)
+	</insert>
 </mapper>
