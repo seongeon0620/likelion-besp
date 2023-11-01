@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.woori.myapp.entity.BoardDto;
+import com.woori.myapp.entity.MemberDto;
 
 // 저장시 이 객체를 만들어 저장시에 스프링프레임워크한테 boardDao로 저장해주시고 줄때 이 객체로 주세요.
 // Autowired를 사용하는 것이 아닌 @Resource(name="boardDao")
@@ -33,5 +34,4 @@ public class BoardDaoImpl implements BoardDao {
 	public void insert(BoardDto dto) {
 		sm.insert("Board_insert", dto);
 	}
-
 }
