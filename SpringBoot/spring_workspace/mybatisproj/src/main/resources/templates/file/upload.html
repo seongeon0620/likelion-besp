@@ -1,0 +1,41 @@
+{{>layout/header}}
+<body>
+	<form method="post" name="myform" id="myform" enctype="multipart/form-data">
+		제목 : <input type="text" name="title" /><br/>
+		내용 : <input type="text" name="contents" /><br/>
+		파일 전송 : <input type="file" name="file" id="file"/><br/>
+		<button type="button" id="btnUpload">파일업로드</button>
+	</form>
+</body>
+</html>
+<script>
+	$(() => {
+		$("#btnUpload").click(() => {
+			// 파일을 전송할때는 자바스크립트가 제공하를 formData 객체를 써야 한다.
+			// document.myform - 이름속성으로 폼을 접근
+			// document.getElementById("myform")	id로 접근. $("#myform")과는 다르다
+			let frmData = new FormData($("#myform")[0]);
+			console.log(frmData);
+			for (key of frmData.keys()) {
+				console.log(frmData.get(key));
+			}
+			
+			$.ajax({
+				url : "/upload",
+				data : frmData,
+				contentType : false,	// 아래 두개가 꼭 들어가야함
+				processData : false,
+				method : "POST",
+				dataType: "json"
+				
+			})
+			.done((res) => {
+				console.log(res.filename);
+				console.log(res.image_url);
+			})
+			.fail((res, error, status) => {
+				console.log(error);
+			})
+		});
+	})
+</script>
