@@ -54,6 +54,10 @@
 			})
 			.done((res) => {
 				console.log(res);
+				if (res.result == "result") {
+					alert("등록성공");
+					location.href = "/person/list2"
+				}
 			})
 			.fail((res, error, status) => {
 				console.log(error);

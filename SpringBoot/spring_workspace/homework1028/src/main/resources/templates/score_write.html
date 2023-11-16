@@ -10,17 +10,18 @@
 			$("#scoreForm").submit();
 		});
 	});
+	
 </script>
 </head>
 <body>
-	<form id="scoreForm" action="/score/save" method="post">
+	<form id="scoreForm" name="scoreForm" action="/score/save" method="post">
 		<p>점수를 입력하세요.</p>
-		번호 : <input type="text" name="idx" /><br />
-		이름 : <input type="text" name="name" /><br />
+		번호 : <input type="text" name="idx"/><br />
+		이름 : <input type="text" name="name"  /><br />
 		국어점수 : <input type="text" name="kor" /><br />
 		영어점수 : <input type="text" name="eng" /><br />
-		수학점수 : <input type="text" name="mat" /><br />
-		<button id="btnSubmit">제출</button>
+		수학점수 : <input type="text" name="mat"/><br />
+		<button type="button" id="btnSubmit">입력</button>
 	</form>
 </body>
 </html>
